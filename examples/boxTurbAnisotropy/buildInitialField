@@ -1,0 +1,81 @@
+#!/bin/bash
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# settings
+
+    # flag to enable computations in parallel mode
+    parallel=true
+
+    # flag to set blockMesh size
+    sizeN=64
+
+    # initial field input
+    fields="anisotropicR.8-2-0-1-0-3"
+
+    # executed command
+    app="gitVerSpectralInverter"
+    appFlag="-turb R"
+    logFlag=""
+
+    # energy spectrum method
+    useSpectrumTable=false
+
+    # additional figure flag (only used in figure file's name)
+    figFlag=$fields
+
+    # decomposition details
+    dMethod=simple
+    dNo=4
+    dCut="(2 2 1)"
+
+
+#-----------------------------------------------------------------------------
+
+set -e
+
+
+# Set useSpectrumTable in constant/spectralMethodDict
+sed -i "s/\(^useSpectrumTable[ \t]*\).*;$/\1$useSpectrumTable;/g" constant/spectralMethodDict
+[ "$useSpectrumTable" = true ] && mode="table" || mode="model"
+
+# Set parallel decomposition
+sed -i "s/\(^numberOfSubdomains[ \t]*\).*;$/\1$dNo;/g" system/decomposeParDict
+sed -i "s/\(^method[ \t]*\).*;$/\1$dMethod;/g" system/decomposeParDict
+sed -i "s/\(^    n[ \t]*\).*;$/\1$dCut;/g" system/decomposeParDict
+
+
+cp -r 0.orig.more/0.orig.$fields 0
+
+sed -i "s/\(^sizeN[ \t]*\).*;$/\1$sizeN;/g" constant/createBoxTurbDict
+
+runApplication -s createBlockMesh createBoxTurb -createBlockMesh
+
+# Log file connector
+[ -z $logFlag ] && lfc="" || lfc="."
+
+if [ "$parallel" = true ]
+then
+
+    runApplication decomposePar -force
+
+    runParallel -s $logFlag$lfc$sizeN $app $appFlag
+
+    runParallel postProcess -funcs energySpectrum -field U -time 0
+
+    runApplication reconstructPar -withZero
+
+else
+
+    runApplication -s $logFlag$lfc$sizeN $app $appFlag
+
+    runApplication postProcess -funcs energySpectrum -field U -time 0
+
+fi
+
+
+gnuplot plotEnergySpectrum.plt
+
+
+# ------------------------------------------------------------------------------

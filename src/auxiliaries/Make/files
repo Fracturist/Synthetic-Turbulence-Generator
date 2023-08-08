@@ -1,0 +1,5 @@
+spectrumModel/spectrumModel.C
+
+auxiliaryFunctions/auxiliaryFunctions.C
+
+LIB = $(FOAM_USER_LIBBIN)/libgitVerAuxiliaries

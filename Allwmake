@@ -1,0 +1,4 @@
+wmake src/auxiliaries
+
+wmake src/whiteNoiseMaker
+wmake src/spectralInverter

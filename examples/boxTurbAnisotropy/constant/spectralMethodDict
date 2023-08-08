@@ -1,0 +1,84 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      spectralMethodDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+nModes                  5000;
+
+logDistribution         on;
+
+useSpectrumTable        false;
+
+tabulatedSpectrum
+{
+    // Energy as a function of wave number
+    // Here using Comte-Bellot and Corrsin data at t.U_0/M = 42
+    // (see Ref. table 3)
+    Ek                  table
+    (
+        (15 0)
+        (20 0.000129)
+        (25 0.00023)
+        (30 0.000322)
+        (40 0.000435)
+        (50 0.000457)
+        (70 0.00038)
+        (100 0.00027)
+        (150 0.000168)
+        (200 0.00012)
+        (250 8.9e-05)
+        (300 7.03e-05)
+        (400 4.7e-05)
+        (600 2.47e-05)
+        (800 1.26e-05)
+        (1000 7.42e-06)
+        (1250 3.96e-06)
+        (1500 2.33e-06)
+        (1750 1.34e-06)
+        (2000 8e-07)
+    );
+
+    // Turbulent characteristic velocity of given Ek
+    uTur0               0.22;
+}
+
+modeledSpectrum
+{
+    kappa0              50;
+    uTur0               0.22;
+
+    // Inertial range: E = C*epsilon^(2.0/3.0)*kappa*(-5.0/3.0)
+    C                   1.5;
+
+    // Choose energy-containing range function f_L(kappa*L)
+    // Normal: p0 = 2.0; von Karman spectrum: p0 = 4.0
+    p0                  4.0;
+
+    // Choose dissipation range model
+    // Traditional exponential decay model
+    // Typical value: 1.0, 0.75(Pao spectrum), 0.5
+    q0                  0.5;
+
+    // A special unity-consistent exponential decay model
+    // When unityModel is ture, C is fixed to 1.5 for constant c_eta
+    // and beta is fixed to 5.2 ignoring q0.
+    unityModel          true;
+    beta                5.2;
+
+    // Very simple low Re_t model which disobeys -5/3 law
+    simpleModel         false;
+}
+
+
+// ************************************************************************* //
