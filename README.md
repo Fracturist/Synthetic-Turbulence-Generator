@@ -1,6 +1,6 @@
 # Synthetic-Turbulence-Generator
 
-This repo provides code for our paper [An efficient and low-divergence method for generating inhomogeneous and anisotropic turbulence with arbitrary spectra]() ([arXiv version](https://doi.org/10.48550/arXiv.2301.05363)), implemented in the OpenFOAM framework.
+This repo provides code for our paper [An efficient and low-divergence method for generating inhomogeneous and anisotropic turbulence with arbitrary spectra](https://doi.org/10.1017/jfm.2023.548) ([arXiv version](https://doi.org/10.48550/arXiv.2301.05363)), implemented in the OpenFOAM framework.
 * Authors: Hao Guo \[[Google Scholar](https://scholar.google.com/citations?hl=zh-CN&user=ZOhz0b8AAAAJ)\], Peixue Jiang, Lin Ye, Yinhai Zhu
 
 <p align="center">
@@ -52,18 +52,17 @@ OpenFOAM v2106
 
 ## Citation
 
-If you find this repo useful in your research, please consider citing our paper: [An efficient and low-divergence method for generating inhomogeneous and anisotropic turbulence with arbitrary spectra]().
+If you find this repo useful in your research, please consider citing our paper: [An efficient and low-divergence method for generating inhomogeneous and anisotropic turbulence with arbitrary spectra](https://doi.org/10.1017/jfm.2023.548).
 
 ```
-@article{liu2021physics,
-  title={Physics-informed Dyna-style model-based deep reinforcement learning for dynamic control},
-  author={Liu, Xin-Yang and Wang, Jian-Xun},
-  journal={Proceedings of the Royal Society A},
-  volume={477},
-  number={2255},
-  pages={20210618},
-  year={2021},
-  publisher={The Royal Society}
+@article{Guo2023,
+    title={An efficient and low-divergence method for generating inhomogeneous and anisotropic turbulence with arbitrary spectra},
+    author={Guo, Hao and Jiang, Peixue and Ye, Lin and Zhu, Yinhai},
+    year={2023},
+    journal={Journal of Fluid Mechanics},
+    volume={970},
+    pages={A2},
+    DOI={10.1017/jfm.2023.548},
 }
 ```
 
